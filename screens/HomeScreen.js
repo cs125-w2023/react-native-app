@@ -1,26 +1,15 @@
-import { React, useContext } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import { Context as UserContext } from '../contexts/UserContext';
+import { React, useEffect, TouchableOpacity } from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import HomeScreenComponent from './HomeScreenComponent';
+import { Icon } from '@rneui/themed';
+
 
 export default HomeScreen = ({ navigation }) => {
-    const userContext = useContext(UserContext);
+    const Drawer = createDrawerNavigator();
 
-    console.log(userContext.state);
     return (
-        <View style={styles.view}>
-            <SafeAreaView style={styles.safeAreaView}>
-                <Text></Text>
-            </SafeAreaView>
-        </View>
+        <Drawer.Navigator screenOptions={{headerShown: true, headerTransparent: false, headerShadowVisible: false, headerStyle: {backgroundColor: '#311D3F'}}}>
+            <Drawer.Screen name="Home" component={HomeScreenComponent} />
+        </Drawer.Navigator>
     );
 }
-
-const styles = StyleSheet.create({
-    safeAreaView: {
-        flex: 1,
-    },
-    view: {
-        flex: 1,
-        backgroundColor: '#311D3F'
-    }
-})

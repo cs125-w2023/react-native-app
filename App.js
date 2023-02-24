@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Platform, UIManager } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Platform, UIManager, Button, ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LaunchScreen from './screens/LaunchScreen';
@@ -19,9 +19,15 @@ export default function App() {
   return (
     <UserContextProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LaunchScreen" screenOptions={{headerShown: false}}>
-          <Stack.Screen name="LaunchScreen" component={LaunchScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Navigator initialRouteName="LaunchScreen">
+          <Stack.Group screenOptions={{headerShown: false}}>
+            <Stack.Screen name="LaunchScreen" component={LaunchScreen} />
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          </Stack.Group>
+          <Stack.Group screenOptions={{headerShown: true, headerTransparent: true}}>
+            
+          </Stack.Group>
+          
         </Stack.Navigator>
       </NavigationContainer>
     </UserContextProvider>
@@ -29,5 +35,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  
+
 })

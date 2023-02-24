@@ -127,49 +127,51 @@ export default LaunchScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#E23E57'}}>
             <KeyboardAwareScrollView scrollEnabled={false} contentContainerStyle={styles.keyboardAwareScrollView}>
-                    <Image style={styles.image} source={require('../assets/iCare.png')} />
-                    {expanded && (
-                        <View>
-                            <TextInput
-                                style={styles.textInput}
-                                autoCapitalize='none'
-                                placeholder='Email'
-                                onChangeText={setEmail}/>
-                            <TextInput
-                                style={styles.textInput}
-                                autoCapitalize='none'
-                                placeholder='Password'
-                                onChangeText={setPassword}
-                                secureTextEntry={true}/>
-                            <View style={styles.viewButtons}>
-                                <TouchableOpacity 
-                                    id='loginButton'
-                                    style={styles.button}
-                                    onPress={() => {login({navigation, email, password, userContext});}}>
-                                    <Text style={{color: 'white', fontSize: 16}}>Login</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity 
-                                    id='signUpButton'
-                                    style={styles.button}
-                                    onPress={() => {signUp({navigation, email, password, userContext})}}>
-                                    <Text style={{color: 'white', fontSize: 16}}>Sign up</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    )}
-                    {!expanded && (
+                <Image style={styles.image} source={require('../assets/iCare.png')} />
+                {expanded && (
+                    <View>
+                        <TextInput
+                            style={styles.textInput}
+                            autoCapitalize='none'
+                            placeholder='Email'
+                            onChangeText={setEmail}
+                            defaultValue=''/>
+                        <TextInput
+                            style={styles.textInput}
+                            autoCapitalize='none'
+                            placeholder='Password'
+                            onChangeText={setPassword}
+                            secureTextEntry={true}
+                            defaultValue=''/>
                         <View style={styles.viewButtons}>
                             <TouchableOpacity 
-                                id='getStartedButton'
+                                id='loginButton'
                                 style={styles.button}
-                                onPress={() => {
-                                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                                    setExpanded(!expanded);
-                                }}>
-                                <Text style={{color: 'white', fontSize: 16}}>Get Started</Text>
+                                onPress={() => {login({navigation, email, password, userContext});}}>
+                                <Text style={{color: 'white', fontSize: 16}}>Login</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                id='signUpButton'
+                                style={styles.button}
+                                onPress={() => {signUp({navigation, email, password, userContext})}}>
+                                <Text style={{color: 'white', fontSize: 16}}>Sign up</Text>
                             </TouchableOpacity>
                         </View>
-                    )}
+                    </View>
+                )}
+                {!expanded && (
+                    <View style={styles.viewButtons}>
+                        <TouchableOpacity 
+                            id='getStartedButton'
+                            style={styles.button}
+                            onPress={() => {
+                                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                                setExpanded(!expanded);
+                            }}>
+                            <Text style={{color: 'white', fontSize: 16}}>Get Started</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
             </KeyboardAwareScrollView>
         </SafeAreaView>
     );
