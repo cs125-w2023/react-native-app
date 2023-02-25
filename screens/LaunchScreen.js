@@ -135,14 +135,16 @@ export default LaunchScreen = ({ navigation }) => {
                             autoCapitalize='none'
                             placeholder='Email'
                             onChangeText={setEmail}
-                            defaultValue=''/>
+                            defaultValue=''
+                            backgroundColor='#FFFFFF'/>
                         <TextInput
                             style={styles.textInput}
                             autoCapitalize='none'
                             placeholder='Password'
                             onChangeText={setPassword}
                             secureTextEntry={true}
-                            defaultValue=''/>
+                            defaultValue=''
+                            backgroundColor='#FFFFFF'/>
                         <View style={styles.viewButtons}>
                             <TouchableOpacity 
                                 id='loginButton'
