@@ -33,7 +33,7 @@ const signUp = ({ navigation, email, password, userContext }) => {
         )
         .then(response => {
             if (response.status == 200) {
-                login({navigation, email, password, userContext});
+                login({email, password, userContext}).then(() => { navigation.navigate('WelcomeScreen'); });
             } else {
                 Alert.alert(
                     "",
@@ -63,7 +63,7 @@ const signUp = ({ navigation, email, password, userContext }) => {
     }
 }
 
-const login = ({ navigation, email, password, userContext }) => {
+const login = async ({ email, password, userContext }) => {
     if (email == "" || password == "") {
         Alert.alert(
             "",
@@ -76,7 +76,7 @@ const login = ({ navigation, email, password, userContext }) => {
             ]
         );
     } else {
-        axios.post(
+        await axios.post(
             "http://cs125-api-env.eba-55euqiex.us-west-1.elasticbeanstalk.com/login",
             {
                 email, 
@@ -87,7 +87,7 @@ const login = ({ navigation, email, password, userContext }) => {
         .then(response => {
             if (response.status == 200) {
                 userContext.set(response.data.entity.id);
-                navigation.navigate('HomeScreen');
+                console.log(`logged in userId ${response.data.entity.id}`);
             } else {
                 Alert.alert(
                     "",
@@ -115,6 +115,10 @@ const login = ({ navigation, email, password, userContext }) => {
             )
         });
     }
+}
+
+const returning = ({navigation, email, password, userContext}) => {
+    login({email, password, userContext}).then(() => { navigation.navigate('HomeScreen'); });
 }
 
 
@@ -149,7 +153,7 @@ export default LaunchScreen = ({ navigation }) => {
                             <TouchableOpacity 
                                 id='loginButton'
                                 style={styles.button}
-                                onPress={() => {login({navigation, email, password, userContext});}}>
+                                onPress={() => {returning({navigation, email, password, userContext});}}>
                                 <Text style={{color: 'white', fontSize: 16}}>Login</Text>
                             </TouchableOpacity>
                             <TouchableOpacity 
