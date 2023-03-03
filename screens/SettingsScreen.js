@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { React, useState, useContext, useEffect } from 'react';
+import { React, useState, useContext, useEffect, useRef } from 'react';
 import { Image, View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, LayoutAnimation, Alert, Button } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -10,6 +10,10 @@ const bodyTypes = ['Slim', 'Fit', 'Heavy']
 
 const save = ({ navigation, age, bodyType, userContext}) => {
     var age = parseInt(age);
+    if(age == 0) {
+        Alert.alert('Please enter a valid age');
+        return;
+    }
     var bodyTypeId;
     if(bodyType=='Slim') {
         bodyTypeId = 1;
@@ -17,8 +21,12 @@ const save = ({ navigation, age, bodyType, userContext}) => {
     else if(bodyType=='Fit') {
         bodyTypeId = 2;
     }
-    else {
+    else if(bodyType=='Heavy') {
         bodyTypeId = 3;
+    }
+    else {
+        Alert.alert('Please enter a valid bodyType');
+        return;
     }
     axios.put(
         `http://cs125-api-env.eba-55euqiex.us-west-1.elasticbeanstalk.com/users/${userContext.state}/info`,
@@ -27,7 +35,7 @@ const save = ({ navigation, age, bodyType, userContext}) => {
             bodyTypeId
         }
     ).then((response) => {
-        if(response.status == 200) {    
+        if(response.status == 200) {
             Alert.alert('Settings Saved!');
             navigation.goBack();
         }
@@ -37,9 +45,10 @@ const save = ({ navigation, age, bodyType, userContext}) => {
 }
 
 export default SettingsScreen = ({ navigation }) => {
-    const [age, setAge] = useState('');
-    const [bodyType, setBodyType] = useState('');
+    const [age, setAge] = useState(0);
+    const [bodyType, setBodyType] = useState('none');
     const userContext = useContext(UserContext);
+    const dropdownRef = useRef({})
 
     useEffect(() => {
         navigation.setOptions({
@@ -50,10 +59,10 @@ export default SettingsScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
             <KeyboardAwareScrollView scrollEnabled={false} contentContainerStyle={styles.keyboardAwareScrollView}>
-                    <Text>Settings</Text>
-                    <View>
+                    <Text style={styles.pageHeading}>Settings</Text>
+                    <View style={styles.pageContent}>
                         <View style={styles.viewAge}>
-                            <Text>
+                            <Text style={styles.textLabel}>
                                 Set Age:
                             </Text>
                             <TextInput
@@ -66,12 +75,15 @@ export default SettingsScreen = ({ navigation }) => {
                         </View>
 
                         <View style={styles.viewBodyType}>
-                            <Text>
+                            <Text style={styles.textLabel}>
                                 Set Body Type:
                             </Text>
                             <SelectDropdown
                                 data={bodyTypes}
                                 onSelect={setBodyType}
+                                buttonStyle={styles.dropdownButton}
+                                dropdownIconPosition='right'
+                                ref={dropdownRef}
                             />
                         </View>
 
@@ -90,25 +102,32 @@ export default SettingsScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    pageHeading: {
+        fontSize: 40,
+        alignSelf: 'center',
+        margin: 30,
+        flex: 1
+    },
     cancelButton: {
         // width: 150,
-        // height: 50,
+        height: 50,
         flex: 1,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 5,
+        marginHorizontal: 10,
+        // borderWidth: 1
         // display: 'none'
     },
     saveButton: {
         // width: 150,
-        // height: 50,
+        height: 50,
         flex: 1,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#E23E57',
-        margin: 5,
+        marginHorizontal: 10,
         // display: 'none'
     },
     saveButtonText: {
@@ -116,12 +135,11 @@ const styles = StyleSheet.create({
     },
     keyboardAwareScrollView: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'stretch',
     },
     textInput: {
         borderWidth: 1,
-        width: 250,
+        width: 50,
         height: 50,
         borderRadius: 10,
         padding: 10,
@@ -129,11 +147,35 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         // display: 'none'
     },
-    viewAge: {},
-    viewBodyType: {},
+    dropdownButton: {
+        width: 100
+    },
+    pageContent: {
+        justifyContent: 'flex-start',
+        flex: 8
+    },
+    viewAge: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 30,
+        marginHorizontal: 50
+    },
+    viewBodyType: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 30,
+        marginHorizontal: 50
+    },
     viewButtons: {
         flexDirection: 'row',
-        width: 260,
-        height: 60,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        marginHorizontal: 50
+        // borderWidth: 1
+    },
+    textLabel: {
+        fontSize: 20
     }
 })
