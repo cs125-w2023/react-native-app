@@ -6,7 +6,12 @@ import axios from 'axios';
 
 
 const dayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const genConfig = {
+    headers: {
+        'Content-Type': 'application/json',
 
+    }
+}
 
 export default HomeScreenComponent = ({ navigation }) => {
     const today = new Date();
@@ -28,17 +33,40 @@ export default HomeScreenComponent = ({ navigation }) => {
         // async function ALWAYS return promise
         const getPlan = async ( userId ) => {
             var toReturn = [];
+            // generate plan
+            console.log(`generating plan id ${userId}`);
+            await axios.post(
+                "http://cs125-api-env.eba-55euqiex.us-west-1.elasticbeanstalk.com/exercises/generate-week",    
+                {
+                    'userId':userId
+                },
+                {
+                headers: {
+                    'Content-Type': 'application/json',
+                    userId
+                }
+                }
+            )
+            .then(() => {
+                console.log('plan generated');
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
+            // retreive plan
+            console.log(`getting plan id ${userId}`);
             await axios.get(
                 "http://cs125-api-env.eba-55euqiex.us-west-1.elasticbeanstalk.com/exercises",
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        userId
+                        'userId': userId
                     }
                 }
             )
             .then(response => {
                 toReturn = response.data.entity;
+                console.log('plan retreived');
             })
             .catch(error => {
                 console.log(error.message);
