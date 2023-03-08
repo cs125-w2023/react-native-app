@@ -88,10 +88,10 @@ export default SettingsScreen = ({ navigation }) => {
                         </View>
 
                         <View style={styles.viewButtons}>
-                            <TouchableOpacity style={styles.cancelButton} onPress={()=>{navigation.goBack();}}>
+                            <TouchableOpacity style={styles.cancelButton} onPress={()=>{ dropdownRef.current.reset(); setAge(0); navigation.goBack();}}>
                                 <Text>Cancel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.saveButton} onPress={()=>{save({navigation, age, bodyType, userContext});}} >
+                            <TouchableOpacity style={styles.saveButton} onPress={()=>{save({navigation, age, bodyType, userContext}); dropdownRef.current.reset(); setAge(0); }} >
                                 <Text style={styles.saveButtonText}>Save</Text>
                             </TouchableOpacity>
                         </View>
